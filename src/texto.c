@@ -21,8 +21,9 @@ void leArqv(char* nomeArq) {
         return;
     }
     while (!feof(arq)) {
-        fgets(Linha, MAX_LINHA, arq);
-        printf("%s",Linha);
+        if(fgets(Linha, MAX_LINHA, arq) != NULL) {
+            printf("%s", Linha) ;
+        }
     }
     // desalocaTexto(textoinicial);
 }
