@@ -6,6 +6,7 @@ OBJ_DIR := $(BUILD_DIR)/.build
 BIN_PATH := $(BUILD_DIR)/$(BIN_NAME)
 WFLAGS := -Wall \
 		  -Wextra \
+		  -Wno-sign-compare \
 		  -pedantic
 CFLAGS := $(WFLAGS) \
 		  -std=c99 \
