@@ -11,8 +11,8 @@
 
 void inicializaTexto(texto *textoinicial) {
     int i;
-    textoinicial->criptografado = malloc(MAX_TEXTO * sizeof(char));
-    textoinicial->parcial = malloc(MAX_TEXTO * sizeof(char));
+    textoinicial->criptografado = calloc(MAX_TEXTO, sizeof(char));
+    textoinicial->parcial = calloc(MAX_TEXTO, sizeof(char));
     for(i = 0; i < TAMANHO_ALFABETO; i++){
         textoinicial->chave[i] = ' ';
     }
