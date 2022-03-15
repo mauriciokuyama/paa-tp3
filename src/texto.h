@@ -13,7 +13,7 @@ typedef struct Texto
 {
     char *criptografado;
     char *parcial;
-    char chave[TAMANHO_ALFABETO];
+    char chave[TAMANHO_ALFABETO+1];
     frequencia lista_frequencia[TAMANHO_ALFABETO];
 } texto;
 
@@ -21,6 +21,7 @@ void inicializaTexto(texto *textoinicial);
 void estadoAtual(texto textoinicial);
 void analiseFrequencia(texto *textoinicial);
 void alteraChave(texto *textoinicial);
-void desalocaTexto(texto textoinicial);
 void buscaCripto(texto textoinicial);
+void exportaResultado(texto textoinicial);
+void desalocaTexto(texto textoinicial);
 void leArqv(char* nomeArq);

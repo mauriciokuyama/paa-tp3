@@ -19,6 +19,7 @@ void inicializaTexto(texto *textoinicial)
     {
         textoinicial->chave[i] = ' ';
     }
+    textoinicial->chave[TAMANHO_ALFABETO] = '\0'; 
     for (i = 0; i < TAMANHO_ALFABETO; i++)
     {
         textoinicial->lista_frequencia[i].letra = 'A' + i;
@@ -145,6 +146,35 @@ void alteraChave(texto *textoinicial){
     }
 }
 
+void exportaResultado(texto textoinicial){
+    char caminho[100];
+    printf("Digite o caminho do arquivo de saida para a chave: \n");
+    scanf("%s", caminho);
+    FILE *arq = fopen(caminho,"w");
+    if (!arq)
+    {
+        printf("Problemas na abertura do arquivo\n");
+        return;
+    }
+    for (int i = 0; i < TAMANHO_ALFABETO; i++)
+    {
+        fprintf(arq,"%c", i + 'A');
+    }
+    fprintf(arq,"\n%s",textoinicial.chave);
+    fclose(arq);
+
+    printf("Digite o caminho do arquivo de saida para o texto decifrado: \n");
+    scanf("%s", caminho);
+    arq = fopen(caminho,"w");
+    if (!arq)
+    {
+        printf("Problemas na abertura do arquivo\n");
+        return;
+    }
+    fprintf(arq,"%s",textoinicial.parcial);
+    fclose(arq);
+}
+
 void leArqv(char *nomeArq)
 {
     FILE *arq;
@@ -168,8 +198,9 @@ void leArqv(char *nomeArq)
     // analiseFrequencia(&textoinicial);
     // estadoAtual(textoinicial);
     // buscaCripto(textoinicial);
-    alteraChave(&textoinicial);
-    estadoAtual(textoinicial);
+    // alteraChave(&textoinicial);
+    exportaResultado(textoinicial);
+    // estadoAtual(textoinicial);
     desalocaTexto(textoinicial);
     fclose(arq);
 }
