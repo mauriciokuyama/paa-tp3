@@ -8,7 +8,7 @@
 #define MAX_TEXTO 10000
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
-#define TAM_ASC 256
+#define TAM_ASCII 256
 
 void inicializaTexto(texto *textoinicial) {
     int i;
@@ -76,29 +76,31 @@ static int compare(const void* a, const void* b)
     printf("\n");
 }
 
-void shift_and_exato(char* text, char* pattern) {
-    int m = strlen(pattern);
-    int n = strlen(text);
-    unsigned long R;
-    unsigned long pattern_mask[TAM_ASC];
-    int flag=0;
+void shift_and_exato(char* texto, char* padrao) {
+    int tamanhopadrao = strlen(padrao);
+    int tamanhotexto = strlen(texto);
+    int R = 0;
+    int mascara[TAM_ASCII];
+    int flag = 0;
+    int quantidade = 0;
 
-    R = 0;
+    for (int i = 0; i < TAM_ASCII; i++)           
+        mascara[i] = 0;
+    for (int i = 1; i <= tamanhopadrao; i++)    
+        mascara[(int)padrao[i-1]] |= 1 << (tamanhopadrao-i);
 
-    for (int i = 0; i < TAM_ASC; i++) pattern_mask[i] = 0;
-    for (int i = 1; i <= m; i++)         pattern_mask[pattern[i-1]+127] |= 1 << (m-i);
-
-    for (int i = 0; i < n; i++) {
-        R = ((((unsigned long)R) >> 1) | 
-          (1 << (m - 1))) & pattern_mask[text[i] + 127];
-        if ((R & 1) != 0) {
-            printf("Shift-And Exato: Match no indice: %d\n", i-m+2);
+    for (int i = 0; i < tamanhotexto; i++) {
+        R = ((R >> 1) | (1 << (tamanhopadrao - 1))) & mascara[(int)texto[i]];
+        if ((R & 1) != 0){
+            quantidade ++;
             flag=1;
         }
     }
 
-    if (flag==0) printf("Padrão não encontrado!\n");
-    
+    if (flag==0) 
+        printf("Padrão não encontrado!\n");
+    else 
+        printf("Padrão encontrado %d vezes\n", quantidade);
     return;
 }
 
@@ -125,8 +127,9 @@ void leArqv(char* nomeArq) {
         }
     }
     strcpy(textoinicial.parcial, textoinicial.criptografado);
-    analiseFrequencia(&textoinicial);
-    estadoAtual(textoinicial);
+    // analiseFrequencia(&textoinicial);
+    // estadoAtual(textoinicial);
+    buscaCripto(textoinicial);
     desalocaTexto(textoinicial);
     fclose(arq);
 }
