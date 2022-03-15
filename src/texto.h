@@ -20,6 +20,7 @@ typedef struct Texto
 void inicializaTexto(texto *textoinicial);
 void estadoAtual(texto textoinicial);
 void analiseFrequencia(texto *textoinicial);
+void alteraChave(texto *textoinicial);
 void desalocaTexto(texto textoinicial);
 void buscaCripto(texto textoinicial);
 void leArqv(char* nomeArq);

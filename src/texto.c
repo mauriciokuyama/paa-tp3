@@ -132,6 +132,19 @@ void buscaCripto(texto textoinicial)
     shift_and_exato(textoinicial.parcial, padrao);
 }
 
+void alteraChave(texto *textoinicial){
+    int i;
+    char antigo, novo;
+    printf("Informe a letra original, seguida da letra para a qual foi mapeada:\n");
+    scanf("%c %c", &antigo, &novo);
+    textoinicial->chave[(int)antigo-'A'] = novo;
+    printf("Registrado: %c -> %c\n", antigo, novo);
+
+    for (i = 0; i < strlen(textoinicial->criptografado); i++) {
+        if (textoinicial->parcial[i] == antigo) textoinicial->parcial[i] = novo;
+    }
+}
+
 void leArqv(char *nomeArq)
 {
     FILE *arq;
@@ -154,7 +167,9 @@ void leArqv(char *nomeArq)
     strcpy(textoinicial.parcial, textoinicial.criptografado);
     // analiseFrequencia(&textoinicial);
     // estadoAtual(textoinicial);
-    buscaCripto(textoinicial);
+    // buscaCripto(textoinicial);
+    alteraChave(&textoinicial);
+    estadoAtual(textoinicial);
     desalocaTexto(textoinicial);
     fclose(arq);
 }
