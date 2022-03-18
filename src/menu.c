@@ -45,7 +45,7 @@ void menu()
             para_execucao();
             break;
         case 4:
-            // TODO
+            buscaParcial(textoinicial);
             para_execucao();
             break;
         case 5:

@@ -26,6 +26,7 @@ void analiseFrequencia(texto *textoinicial);
 void alteraChave(texto *textoinicial);
 void buscaCripto(texto textoinicial);
 void exportaResultado(texto textoinicial);
+void buscaParcial(texto textoinicial);
 void desalocaTexto(texto textoinicial);
 texto leArqv(char* nomeArq);
 
