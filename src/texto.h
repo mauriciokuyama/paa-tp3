@@ -1,3 +1,6 @@
+#ifndef TEXTO_H
+#define TEXTO_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,4 +27,6 @@ void alteraChave(texto *textoinicial);
 void buscaCripto(texto textoinicial);
 void exportaResultado(texto textoinicial);
 void desalocaTexto(texto textoinicial);
-void leArqv(char* nomeArq);
+texto leArqv(char* nomeArq);
+
+#endif

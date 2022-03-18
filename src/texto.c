@@ -19,7 +19,7 @@ void inicializaTexto(texto *textoinicial)
     {
         textoinicial->chave[i] = ' ';
     }
-    textoinicial->chave[TAMANHO_ALFABETO] = '\0'; 
+    textoinicial->chave[TAMANHO_ALFABETO] = '\0';
     for (i = 0; i < TAMANHO_ALFABETO; i++)
     {
         textoinicial->lista_frequencia[i].letra = 'A' + i;
@@ -175,7 +175,7 @@ void exportaResultado(texto textoinicial){
     fclose(arq);
 }
 
-void leArqv(char *nomeArq)
+texto leArqv(char *nomeArq)
 {
     FILE *arq;
     texto textoinicial;
@@ -184,7 +184,7 @@ void leArqv(char *nomeArq)
     if (!arq)
     {
         printf("Problemas na abertura do arquivo\n");
-        return;
+        exit(1);
     }
     inicializaTexto(&textoinicial);
     while (!feof(arq))
@@ -195,12 +195,6 @@ void leArqv(char *nomeArq)
         }
     }
     strcpy(textoinicial.parcial, textoinicial.criptografado);
-    // analiseFrequencia(&textoinicial);
-    // estadoAtual(textoinicial);
-    // buscaCripto(textoinicial);
-    // alteraChave(&textoinicial);
-    exportaResultado(textoinicial);
-    // estadoAtual(textoinicial);
-    desalocaTexto(textoinicial);
     fclose(arq);
+    return textoinicial;
 }

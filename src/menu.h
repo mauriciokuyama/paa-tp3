@@ -6,6 +6,7 @@
 #include "texto.h"
 
 void menu();
-void escolhe_arquivo();
+texto escolhe_arquivo();
+void para_execucao();
 
 #endif
