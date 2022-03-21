@@ -93,19 +93,19 @@ static void shift_and_exato(char *texto, char *padrao) {
     int R = 0;
     int mascara[TAM_ASCII];
     int quantidade = 0;
-    for (i =0; i < tamanhopadrao;i++) 
+    for (i =0; i < tamanhopadrao;i++)
         padrao[i] = toupper(padrao[i]);
     //inicializa o vetor mascara com 0
     for (int i = 0; i < TAM_ASCII; i++)
         mascara[i] = 0;
-    //marca 1 na mascara do caractere de acordo com as posições de ocorrencia de cada caractere do padrão 
+    //marca 1 na mascara do caractere de acordo com as posições de ocorrencia de cada caractere do padrão
     for (int i = 1; i <= tamanhopadrao; i++)
         mascara[(int)padrao[i - 1] + 127] |= 1 << (tamanhopadrao - i);
 
     for (int i = 0; i < tamanhotexto; i++) {
         //move R para a direita, adiciona 1 no inicio de R e faz and com a mascara do caractere atual no texto
         R = ((R >> 1) | (1 << (tamanhopadrao - 1))) & mascara[(int)texto[i] + 127];
-        //verifica se houve uma nova ocorrencia do padrão no texto 
+        //verifica se houve uma nova ocorrencia do padrão no texto
         if (R & 1) {
             quantidade++;
         }
@@ -131,8 +131,8 @@ void alteraChave(texto *textoinicial) {
     printf("Registrado: %c -> %c\n", antigo, novo);
 
     for (i = 0; i < strlen(textoinicial->criptografado); i++) {
-        if (textoinicial->parcial[i] == antigo)
-            textoinicial->parcial[i] = novo;
+        if (textoinicial->criptografado[i] == novo)
+            textoinicial->parcial[i] = antigo;
     }
 }
 
@@ -174,7 +174,7 @@ void buscaParcial(texto textoinicial) { // shiftand aproximado
     long R[101];
 
     m = strlen(padrao);
-    for (i =0; i < m;i++) 
+    for (i =0; i < m;i++)
         padrao[i] = toupper(padrao[i]);
     for (i = 0; i < TAM_ASCII; i++)
         Masc[i] = 0;
