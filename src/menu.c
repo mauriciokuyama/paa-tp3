@@ -70,8 +70,10 @@ void menu()
 texto escolhe_arquivo()
 {
     char caminho[100];
+    char buffer[100];
     printf(VERMELHO "\n Digite o nome do arquivo para ser lido : " RESET);
-    scanf("%s", caminho);
+    fgets(buffer, 100, stdin);
+    sscanf(buffer, "%s", caminho);
     return leArqv(caminho);
 }
 

@@ -3,12 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-#define MAX_LINHA        1000
-#define MAX_TEXTO        10000
-#define ANSI_COLOR_RED   "\x1b[31m"
-#define ANSI_COLOR_RESET "\x1b[0m"
-#define TAM_ASCII        256
+#define MAX_LINHA 1000
+#define MAX_TEXTO 10000
+#define TAM_ASCII 256
+
+#define VERDE "\x1b[32m"
+#define RESET "\x1b[0m"
 
 
 void inicializaTexto(texto *textoinicial) {
@@ -47,9 +49,10 @@ void estadoAtual(texto textoinicial) {
         if (textoinicial.criptografado[i] == textoinicial.parcial[i]) {
             printf("%c", textoinicial.criptografado[i]);
         } else {
-            printf(ANSI_COLOR_RED "%c" ANSI_COLOR_RESET, textoinicial.parcial[i]);
+            printf(VERDE "%c" RESET, textoinicial.parcial[i]);
         }
     }
+    printf("\n");
 }
 
 static int compare(const void *a, const void *b) {
@@ -86,19 +89,22 @@ static void shift_and_exato(char *texto, char *padrao) {
     //le o tamanho do texto e o tamanho do padrao
     int tamanhopadrao = strlen(padrao);
     int tamanhotexto = strlen(texto);
+    int i;
     int R = 0;
     int mascara[TAM_ASCII];
     int quantidade = 0;
+    for (i =0; i < tamanhopadrao;i++) 
+        padrao[i] = toupper(padrao[i]);
     //inicializa o vetor mascara com 0
     for (int i = 0; i < TAM_ASCII; i++)
         mascara[i] = 0;
     //marca 1 na mascara do caractere de acordo com as posições de ocorrencia de cada caractere do padrão 
     for (int i = 1; i <= tamanhopadrao; i++)
-        mascara[(int)padrao[i - 1]] |= 1 << (tamanhopadrao - i);
+        mascara[(int)padrao[i - 1] + 127] |= 1 << (tamanhopadrao - i);
 
     for (int i = 0; i < tamanhotexto; i++) {
         //move R para a direita, adiciona 1 no inicio de R e faz and com a mascara do caractere atual no texto
-        R = ((R >> 1) | (1 << (tamanhopadrao - 1))) & mascara[(int)texto[i]];
+        R = ((R >> 1) | (1 << (tamanhopadrao - 1))) & mascara[(int)texto[i] + 127];
         //verifica se houve uma nova ocorrencia do padrão no texto 
         if (R & 1) {
             quantidade++;
@@ -110,15 +116,17 @@ static void shift_and_exato(char *texto, char *padrao) {
 void buscaCripto(texto textoinicial) {
     char padrao[100];
     printf("Qual o padrão utilizado?\n");
-    scanf("%s", padrao);
+    fgets(padrao, 100, stdin);
     shift_and_exato(textoinicial.parcial, padrao);
 }
 
 void alteraChave(texto *textoinicial) {
     int i;
     char antigo, novo;
+    char buffer[100];
     printf("Informe a letra original, seguida da letra para a qual foi mapeada:\n");
-    scanf("%c %c", &antigo, &novo);
+    fgets(buffer, 100, stdin);
+    sscanf(buffer, "%c %c", &antigo, &novo);
     textoinicial->chave[(int)antigo - 'A'] = novo;
     printf("Registrado: %c -> %c\n", antigo, novo);
 
@@ -131,7 +139,7 @@ void alteraChave(texto *textoinicial) {
 void exportaResultado(texto textoinicial) {
     char caminho[100];
     printf("Digite o caminho do arquivo de saida para a chave: \n");
-    scanf("%s", caminho);
+    fgets(caminho, 100, stdin);
     FILE *arq = fopen(caminho, "w");
     if (!arq) {
         printf("Problemas na abertura do arquivo\n");
@@ -144,7 +152,7 @@ void exportaResultado(texto textoinicial) {
     fclose(arq);
 
     printf("Digite o caminho do arquivo de saida para o texto decifrado: \n");
-    scanf("%s", caminho);
+    fgets(caminho, 100, stdin);
     arq = fopen(caminho, "w");
     if (!arq) {
         printf("Problemas na abertura do arquivo\n");
@@ -166,6 +174,8 @@ void buscaParcial(texto textoinicial) { // shiftand aproximado
     long R[101];
 
     m = strlen(padrao);
+    for (i =0; i < m;i++) 
+        padrao[i] = toupper(padrao[i]);
     for (i = 0; i < TAM_ASCII; i++)
         Masc[i] = 0;
     for (i = 1; i <= m; i++) {
@@ -180,7 +190,7 @@ void buscaParcial(texto textoinicial) { // shiftand aproximado
         Rnovo = ((((unsigned long)Rant) >> 1) | Ri) & Masc[textoinicial.parcial[i] + 127];
         R[0] = Rnovo;
         for (j = 1; j <= k; j++) {
-            Rnovo = ((((unsigned long)R[j]) >> 1) & Masc[textoinicial.parcial[i] + 127]
+            Rnovo = (((((unsigned long)R[j]) >> 1) & Masc[textoinicial.parcial[i] + 127])
             | (unsigned long)(Rant >> 1));
             Rant = R[j];
             R[j] = Rnovo | Ri;
