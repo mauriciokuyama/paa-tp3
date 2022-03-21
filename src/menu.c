@@ -77,6 +77,6 @@ texto escolhe_arquivo()
 
 void para_execucao(){
     char buffer[10];
-    printf("Digite enter para continuar...\n");
+    printf("\nDigite enter para continuar...\n");
     fgets(buffer, 10, stdin);
 }

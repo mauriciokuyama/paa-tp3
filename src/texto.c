@@ -83,20 +83,24 @@ void analiseFrequencia(texto *textoinicial) {
 }
 
 static void shift_and_exato(char *texto, char *padrao) {
+    //le o tamanho do texto e o tamanho do padrao
     int tamanhopadrao = strlen(padrao);
     int tamanhotexto = strlen(texto);
     int R = 0;
     int mascara[TAM_ASCII];
     int quantidade = 0;
-
+    //inicializa o vetor mascara com 0
     for (int i = 0; i < TAM_ASCII; i++)
         mascara[i] = 0;
+    //marca 1 na mascara do caractere de acordo com as posições de ocorrencia de cada caractere do padrão 
     for (int i = 1; i <= tamanhopadrao; i++)
         mascara[(int)padrao[i - 1]] |= 1 << (tamanhopadrao - i);
 
     for (int i = 0; i < tamanhotexto; i++) {
+        //move R para a direita, adiciona 1 no inicio de R e faz and com a mascara do caractere atual no texto
         R = ((R >> 1) | (1 << (tamanhopadrao - 1))) & mascara[(int)texto[i]];
-        if ((R & 1) != 0) {
+        //verifica se houve uma nova ocorrencia do padrão no texto 
+        if (R & 1) {
             quantidade++;
         }
     }
