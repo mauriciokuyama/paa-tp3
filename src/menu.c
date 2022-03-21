@@ -65,6 +65,7 @@ void menu()
         }
 
     }
+    desalocaTexto(textoinicial);
 }
 
 texto escolhe_arquivo()

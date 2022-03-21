@@ -115,8 +115,10 @@ static void shift_and_exato(char *texto, char *padrao) {
 
 void buscaCripto(texto textoinicial) {
     char padrao[100];
+    char buffer[100];
     printf("Qual o padrão utilizado?\n");
-    fgets(padrao, 100, stdin);
+    fgets(buffer, 100, stdin);
+    sscanf(buffer, "%s", padrao);
     shift_and_exato(textoinicial.parcial, padrao);
 }
 
@@ -138,8 +140,10 @@ void alteraChave(texto *textoinicial) {
 
 void exportaResultado(texto textoinicial) {
     char caminho[100];
+    char buffer[100];
     printf("Digite o caminho do arquivo de saida para a chave: \n");
-    fgets(caminho, 100, stdin);
+    fgets(buffer, 100, stdin);
+    sscanf(buffer, "%s", caminho);
     FILE *arq = fopen(caminho, "w");
     if (!arq) {
         printf("Problemas na abertura do arquivo\n");
@@ -152,7 +156,8 @@ void exportaResultado(texto textoinicial) {
     fclose(arq);
 
     printf("Digite o caminho do arquivo de saida para o texto decifrado: \n");
-    fgets(caminho, 100, stdin);
+    fgets(buffer, 100, stdin);
+    sscanf(buffer, "%s", caminho);
     arq = fopen(caminho, "w");
     if (!arq) {
         printf("Problemas na abertura do arquivo\n");
