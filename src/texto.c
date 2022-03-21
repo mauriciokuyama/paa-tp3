@@ -180,21 +180,32 @@ void buscaParcial(texto textoinicial) { // shiftand aproximado
         Rnovo = ((((unsigned long)Rant) >> 1) | Ri) & Masc[textoinicial.parcial[i] + 127];
         R[0] = Rnovo;
         for (j = 1; j <= k; j++) {
-            Rnovo = ((((unsigned long)R[j]) >> 1) & Masc[textoinicial.parcial[i] + 127]) | Rant |
-                    (((unsigned long)(Rant | Rnovo)) >> 1);
+            Rnovo = ((((unsigned long)R[j]) >> 1) & Masc[textoinicial.parcial[i] + 127]
+            | (unsigned long)(Rant >> 1));
             Rant = R[j];
             R[j] = Rnovo | Ri;
         }
-        if ((Rnovo & 1) != 0) {
+        if ((Rnovo & 1) && evalido(textoinicial.parcial,m,i)){
+            printf("@[%ld,%ld):",i-m+1,i+1);
             quantidade++;
-            printf(" Casamento na posicao %12ld\n", i);
+            for (int z=i-m+1; z <= i; z++){
+                printf("%c",textoinicial.parcial[z]);
+            }
+            printf("\n");
             // Ocorrências: 1
             // @[42,47): UEMDA
         }
     }
     printf("Ocorrências: %d\n", quantidade);
 }
-
+int evalido(char* string, int tampadrao,int i){
+    int contador = 0;
+    for (int z=i-tampadrao+1; z <= i; z++){
+        if(string[z]>= 'A' && string[z] <= 'Z') contador++;
+    }
+    if(contador == tampadrao) return 1;
+    return 0;
+}
 texto leArqv(char *nomeArq) {
     FILE *arq;
     texto textoinicial;

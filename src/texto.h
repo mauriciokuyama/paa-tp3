@@ -25,6 +25,7 @@ void estadoAtual(texto textoinicial);
 void analiseFrequencia(texto *textoinicial);
 void alteraChave(texto *textoinicial);
 void buscaCripto(texto textoinicial);
+int evalido(char* string, int tampadrao,int i);
 void exportaResultado(texto textoinicial);
 void buscaParcial(texto textoinicial);
 void desalocaTexto(texto textoinicial);
